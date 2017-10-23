@@ -1,16 +1,16 @@
-'''to encode strings in binary, etc'''
 import csv
 import pandas
 
+#put csv data into pandas dataframe
 fileRead = input('enter file to read: ')
-'''encode ioc, tourney level, hand, score,round'''
-
 atp_data = pandas.read_csv(fileRead,header=0)
 
+#drop unnecessary columns
 toDrop=['tourney_id','surface','tourney_level','match_num','winner_id','winner_seed','winner_entry','loser_id','loser_seed','loser_entry','best_of']
 for item in toDrop:
 	atp_data.drop(item, axis=1)
 
+#encode ioc, tourney level, hand, score,round
 atp_data.replace(['if_l','lala'],[0,3]) #replace strings
 
 fileWrite= input('enter new file to write. end in .csv: ')
