@@ -84,4 +84,4 @@ plt.show()
 #on right where lambda=huge, coefficients=0. Then in middle, good coefficients with better prediction results
 #need cross-validation testing now
 
-
+#for quick testing, func(lambda) returns accuracy
