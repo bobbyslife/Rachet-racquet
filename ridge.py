@@ -1,20 +1,20 @@
 from numpy import *
 
 def loadDataSet(fileName):
-	numFeat = len(open(fileName).readline().split(','))-1 #from csv,how many categories
+	numFeat = len(open(fileName).readline().split(','))-1 #from csv,how many lines so how many rows so how many tennis players
 	dataMat = []; labelMat = []
 	fr = open(fileName)
-	for line in fr.readlines(): #for each instance of features
+	for line in fr.readlines(): #for each instance of features (player)
 		lineArr =[]
 		curLine = line.strip().split(',') #clean commas
-		for i in range(numFeat): #for each category
+		for i in range(numFeat): #for each player
 			lineArr.append(float(curLine[i]))
 			dataMat.append(lineArr) #row-instance of features for one player-of values (but floats) into dataMat as 1 thing in dataMat array
 			labelMat.append(float(curLine[-1])) #last value, assumed target var
-			return dataMat,labelMat
+			return dataMat,labelMat #so return array of arrays where each item = array of values for one player, then return array of target values in same order
 
-def standRegres(xArr,yArr):
-	xMat = mat(xArr); yMat = mat(yArr).T
+def standRegres(xArr,yArr): #computes best fit line
+	xMat = mat(xArr); yMat = mat(yArr).T #format in matrix--row = 1 item in xArr, which is an array of multiple values so those are in cols
 	xTx = xMat.T*xMat
 	if linalg.det(xTx) == 0.0:
 		print("This matrix is singular, cannot do inverse")
