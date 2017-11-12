@@ -1,15 +1,16 @@
 from numpy import *
+
 def loadDataSet(fileName):
-	numFeat = len(open(fileName).readline().split(','))-1
+	numFeat = len(open(fileName).readline().split(','))-1 #from csv,how many categories
 	dataMat = []; labelMat = []
 	fr = open(fileName)
-	for line in fr.readlines():
+	for line in fr.readlines(): #for each instance of features
 		lineArr =[]
-		curLine = line.strip().split(',')
-		for i in range(numFeat):
+		curLine = line.strip().split(',') #clean commas
+		for i in range(numFeat): #for each category
 			lineArr.append(float(curLine[i]))
-			dataMat.append(lineArr)
-			labelMat.append(float(curLine[-1]))
+			dataMat.append(lineArr) #row-instance of features for one player-of values (but floats) into dataMat as 1 thing in dataMat array
+			labelMat.append(float(curLine[-1])) #last value, assumed target var
 			return dataMat,labelMat
 
 def standRegres(xArr,yArr):
