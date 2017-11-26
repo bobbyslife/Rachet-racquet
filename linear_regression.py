@@ -3,6 +3,8 @@ from random import seed
 from random import randrange
 from csv import reader
 from math import sqrt
+
+import matplotlib.pyplot as plt
  
 # Load a CSV file
 def load_csv(filename):
@@ -81,7 +83,11 @@ def coefficients(dataset, col1, col2):
 	# convert x and y from list of str to list of int
 	x = list(map(int, x))
 	y = list(map(int, y))
-	
+
+	#plot on graph
+	plt.scatter(x, y, s=10)
+	plt.show()
+
 	x_mean, y_mean = mean(x), mean(y)
 	b1 = covariance(x, x_mean, y, y_mean) / variance(x, x_mean)
 	b0 = y_mean - b1 * x_mean
