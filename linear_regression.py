@@ -108,14 +108,22 @@ regr = linear_model.LinearRegression()
 # Train the model using the training sets
 regr.fit(train_x, train_y)
 
-# The coefficients
-print('Coefficients: \n', regr.coef_)
+# parameters and coefficients
+print('Parameters: [Age, Right/Left Hand, Height]')
+print('Coefficients:', regr.coef_)
 
 # age, right/left hand, height
-bad_player = np.array([25, 0, 190])
-good_player = np.array([25, 1, 190])
+player_one = np.array([25, 0, 190])
+player_two = np.array([25, 1, 190])
 
-bad_player_rank = (-regr.coef_[0][0]*bad_player[0]) + (regr.coef_[0][1]*bad_player[1]) - (regr.coef_[0][2]*bad_player[2])
-print("Bad Player:", bad_player_rank)
-good_player_rank = (-regr.coef_[0][0]*good_player[0]) + (regr.coef_[0][1]*good_player[1]) - (regr.coef_[0][2]*good_player[2])
-print("Good Player:", good_player_rank)
+# print player stats
+print('Player 1 Stats:', player_one)
+print('Player 2 Stats:', player_two)
+
+# calculuate score using coefficients
+player_one_score = (-regr.coef_[0][0]*player_one[0]) + (regr.coef_[0][1]*player_one[1]) - (regr.coef_[0][2]*player_one[2])
+player_two_score = (-regr.coef_[0][0]*player_two[0]) + (regr.coef_[0][1]*player_two[1]) - (regr.coef_[0][2]*player_two[2])
+
+# print player score
+print("Player 1 Score:", player_one_score)
+print("Player 2 Score:", player_two_score)
