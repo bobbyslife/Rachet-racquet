@@ -4,7 +4,10 @@ from random import randrange
 from csv import reader
 from math import sqrt
 
+import numpy as np
 import matplotlib.pyplot as plt
+from sklearn import datasets, linear_model
+from sklearn.metrics import mean_squared_error, r2_score
  
 # Load a CSV file
 def load_csv(filename):
@@ -18,108 +21,101 @@ def load_csv(filename):
 				continue
 			dataset.append(row)
 	return dataset
- 
-# Convert string column to float
-def str_column_to_float(dataset, column):
-	for row in dataset:
-		row[column] = float(row[column].strip())
- 
-# Split a dataset into a train and test set
-def train_test_split(dataset, split):
-	train = list()
-	train_size = split * len(dataset)
-	dataset_copy = list(dataset)
-	while len(train) < train_size:
-		index = randrange(len(dataset_copy))
-		train.append(dataset_copy.pop(index))
-	return train, dataset_copy
- 
-# Calculate root mean squared error
-def rmse_metric(actual, predicted):
-	sum_error = 0.0
-	for i in range(len(actual)):
-		prediction_error = predicted[i] - actual[i]
-		sum_error += (prediction_error ** 2)
-	mean_error = sum_error / float(len(actual))
-	return sqrt(mean_error)
- 
-# Evaluate an algorithm using a train/test split
-def evaluate_algorithm(dataset, algorithm, split, *args):
-	train, test = train_test_split(dataset, split)
-	test_set = list()
-	for row in test:
-		row_copy = list(row)
-		row_copy[-1] = None
-		test_set.append(row_copy)
-	predicted = algorithm(train, test_set, *args)
-	actual = [row[-1] for row in test]
-	rmse = rmse_metric(actual, predicted)
-	return rmse
- 
-# Calculate the mean value of a list of numbers
-def mean(values):
-	return sum(values) / float(len(values))
- 
-# Calculate covariance between x and y
-def covariance(x, mean_x, y, mean_y):
-	covar = 0.0
-	for i in range(len(x)):
-		covar += (x[i] - mean_x) * (y[i] - mean_y)
-	return covar
- 
-# Calculate the variance of a list of numbers
-def variance(values, mean):
-	return sum([(x-mean)**2 for x in values])
- 
-# Calculate coefficients
-def coefficients(dataset, col1, col2):
-	x = list()
-	y = list()
-	for row in dataset:
-		if row[col1] != '' and row[col2] != '':
-			x.append(row[col1])
-			y.append(row[col2])
 
-	# convert x and y from list of str to list of int
-	x = list(map(int, x))
-	y = list(map(int, y))
+def create_arrays(dataset1, dataset2, dataset3, dataset4, dataset5, dataset6):
+	age_col = 5
+	hand_col = 2
+	height_col = 3
+	country_col = 4
+	rank_col = 6
+	age = list() # col 5
+	hand = list() # col 2
+	height = list() # col 3
+	country = list() # col 4
+	rank = list() # col 6
 
-	#plot on graph
-	plt.scatter(x, y, s=10)
-	plt.show()
+	x_list = list()
+	y_list = list()
 
-	x_mean, y_mean = mean(x), mean(y)
-	b1 = covariance(x, x_mean, y, y_mean) / variance(x, x_mean)
-	b0 = y_mean - b1 * x_mean
-	print("b0: " + str(b0))
-	print("b1: " + str(b1))
-	return [b0, b1]
- 
-# Simple linear regression algorithm
-def simple_linear_regression(train, test):
-	predictions = list()
+	for row in dataset1:
+		if row[age_col] != '' and row[hand_col] != '' and row[height_col] != '' and row[country_col] != '' and row[rank_col] != '':
+			if (row[hand_col] == 'R'):
+				x_list.append([int(float(row[age_col])), '0', row[height_col]])
+			else:
+				x_list.append([int(float(row[age_col])), '1', row[height_col]])
+			rank.append([row[rank_col]])
 
-	b0, b1 = coefficients(train)
+	for row in dataset2:
+		if row[age_col] != '' and row[hand_col] != '' and row[height_col] != '' and row[country_col] != '' and row[rank_col] != '':
+			if (row[hand_col] == 'R'):
+				x_list.append([int(float(row[age_col])), '0', row[height_col]])
+			else:
+				x_list.append([int(float(row[age_col])), '1', row[height_col]])
+			rank.append([row[rank_col]])
 
-	for row in test:
-		yhat = b0 + b1 * row[0]
-		predictions.append(yhat)
-	return predictions
- 
-# Simple linear regression on insurance dataset
-seed(1)
+	for row in dataset3:
+		if row[age_col] != '' and row[hand_col] != '' and row[height_col] != '' and row[country_col] != '' and row[rank_col] != '':
+			if (row[hand_col] == 'R'):
+				x_list.append([int(float(row[age_col])), '0', row[height_col]])
+			else:
+				x_list.append([int(float(row[age_col])), '1', row[height_col]])
+			rank.append([row[rank_col]])
 
-#for i in range(len(dataset[0])):
-#	str_column_to_float(dataset, i)
-# evaluate algorithm
-split = 0.6
-#rmse = evaluate_algorithm(dataset, simple_linear_regression, split)
-#print('RMSE: %.3f' % (rmse))
+	for row in dataset4:
+		if row[age_col] != '' and row[hand_col] != '' and row[height_col] != '' and row[country_col] != '' and row[rank_col] != '':
+			if (row[hand_col] == 'R'):
+				x_list.append([int(float(row[age_col])), '0', row[height_col]])
+			else:
+				x_list.append([int(float(row[age_col])), '1', row[height_col]])
+			rank.append([row[rank_col]])
 
+	for row in dataset5:
+		if row[age_col] != '' and row[hand_col] != '' and row[height_col] != '' and row[country_col] != '' and row[rank_col] != '':
+			if (row[hand_col] == 'R'):
+				x_list.append([int(float(row[age_col])), '0', row[height_col]])
+			else:
+				x_list.append([int(float(row[age_col])), '1', row[height_col]])
+			rank.append([row[rank_col]])
 
+	for row in dataset6:
+		if row[age_col] != '' and row[hand_col] != '' and row[height_col] != '' and row[country_col] != '' and row[rank_col] != '':
+			if (row[hand_col] == 'R'):
+				x_list.append([int(float(row[age_col])), '0', row[height_col]])
+			else:
+				x_list.append([int(float(row[age_col])), '1', row[height_col]])
+			rank.append([row[rank_col]])
+
+	x = np.array(x_list, dtype='<U32')
+	y = np.array(rank, dtype='<U32')
+	return [x, y]
 
 # load and prepare data
-filename = 'atp_matches_2012_grand_slams.csv'
-dataset = load_csv(filename)
-# print out the coefficients of linear regression on columns 6 and 13
-coefficients(dataset, 6, 13)
+dataset1 = load_csv('atp_matches_2012_grand_slams.csv')
+dataset2 = load_csv('atp_matches_2013_grand_slams.csv')
+dataset3 = load_csv('atp_matches_2014_grand_slams.csv')
+dataset4 = load_csv('atp_matches_2015_grand_slams.csv')
+dataset5 = load_csv('atp_matches_2016_grand_slams.csv')
+dataset6 = load_csv('atp_matches_2017_grand_slams.csv')
+train_x, train_y = create_arrays(dataset1, dataset2, dataset3, dataset4, dataset5, dataset6)
+
+#print(train_x.shape)
+#print(train_x)
+#print("\n")
+#print(train_y.shape)
+#print(train_y)
+
+regr = linear_model.LinearRegression()
+# Train the model using the training sets
+regr.fit(train_x, train_y)
+
+# The coefficients
+print('Coefficients: \n', regr.coef_)
+
+# age, right/left hand, height
+bad_player = np.array([25, 0, 190])
+good_player = np.array([25, 1, 190])
+
+bad_player_rank = (-regr.coef_[0][0]*bad_player[0]) + (regr.coef_[0][1]*bad_player[1]) - (regr.coef_[0][2]*bad_player[2])
+print("Bad Player:", bad_player_rank)
+good_player_rank = (-regr.coef_[0][0]*good_player[0]) + (regr.coef_[0][1]*good_player[1]) - (regr.coef_[0][2]*good_player[2])
+print("Good Player:", good_player_rank)
